@@ -1,3 +1,5 @@
+console.log("Testing, testing. 123")
+
 const FILES_TO_CACHE = [
     "/",
     "/index.html",
@@ -39,4 +41,20 @@ self.addEventListener("activate", function(evt) {
     );
 
     self.clients.claim();
+});
+
+// need to finish fetch - need to make sure it is pulling the cached files for
+// offline use
+self.addEventListener("fetch", function(evt) {
+    console.log(evt)
+    evt.respondWith(
+        caches.match(evt.request)
+    .then((response) => {
+        if (response) {
+            return response;
+        } else {
+            return fetch(evt.request)
+        }
+    })
+    )
 });
